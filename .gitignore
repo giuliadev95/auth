@@ -1,0 +1,9 @@
+# Ignore .env file
+.env
+
+# Ignore TypeScript build output
+/dist
+/build
+*.js
+*.js.map
+*.d.ts
