@@ -22,13 +22,14 @@ const users = [];
 app.get('/users', (req, res) => {
     console.log(`Example app listening on port ${PORT}/users`);
     res.send(users);
+    console.log(users);
 }); 
 
 // post users
 app.post('/users', async (req, res)=> {
     try {
         const salt = await bcrypt.genSalt()
-        const hashedPassword = await bcrypt.hash(req.body.password, salt)
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
         console.log('Salt is: ', salt);
         console.log('The complete hashed password is: ', hashedPassword);
         const user = {
@@ -42,5 +43,21 @@ app.post('/users', async (req, res)=> {
         res.status(500).send(error);
         console.log('There was an error: ', error)
     }
-    // hash(salt + 'password') // hashed password: same password block at the base, different salt on top
+});
+
+app.post('/users/login', async(req, res)=> {
+    const user = users.find(user => user.name = req.body.name)
+    if (user == null) {
+        return res.status(400).send('Cannot find user')
+    }
+    try{
+      if( await bcrypt.compare(req.body.password, user.password)){
+        res.send('Success')
+      } else {
+        res.status(500).send('Not allowed');
+      }
+    }
+    catch(error){
+        res.status(500).send(error);
+    }
 })
