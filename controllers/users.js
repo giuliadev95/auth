@@ -31,7 +31,7 @@ export const post_user = async (req, res) => {
     const new_user = new User(user);
     try {
         await new_user.save();
-        res.status(201).json(new_user)
+        res.status(201).json(new_user);
     }
     catch(error){
         res.status(409).json({message: error.message});
@@ -54,7 +54,7 @@ export const update_user = async (req, res) => {
         res.status(200).json(updated_user);
     } 
     catch(error){
-        cres.status(501).json({message: error.message});
+        res.status(501).json({message: error.message});
     }
 }
     
